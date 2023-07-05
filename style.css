@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  display: grid;
+  place-content: center;
+}
+.container {
+  display: grid;
+  justify-content: center;
+  justify-content: center;
+  width: 70vw;
+  height: 70vh;
+}
+.sortTitle{
+  font-family: sans-serif;
+  color: #0066ff;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: capitalize;
+}
+.bars {
+  position: relative;
+  width: 690px;
+  height: 55vh;
+}
+.bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 25px;
+  background: rgb(0, 102, 255);
+}
+.btns{
+  display: flex;
+  justify-content: center;
+}
+.btn {
+  background-color: rgb(0, 68, 255);
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: fit-content;
+  margin: 2rem 1rem;
+}
+.menuIcon{
+    position: absolute;
+    top: 70px;
+    left: 0;
+    cursor: pointer;
+    z-index: 99;
+}
+
+.menuIcon i{
+    padding: 1rem;
+    background: rgb(0, 119, 255);
+    color: white;
+    font-size: 2rem;
+    border-radius: 0 10px 10px 0;
+}
+.menuContainer{
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    padding: 1.5rem;
+    background: rgb(0, 119, 255);
+    border-radius: 0 10px 10px 0;
+    top: 150px;
+    left: -300px;
+    transition: 1s;
+    z-index: 99;
+}
+h2.title{
+    font-family: sans-serif;
+    text-align: center;
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+}
+.sortingTypeContainer{
+    height: 80%;
+}
+.activeMenuContainer{
+    left: 0%;
+    display: block;
+}
+.activeMenu{
+    background: white;
+    color: rgb(0, 119, 255) !important;
+    font-weight: bold;
+}
+.menuElement{
+    font-family: sans-serif;
+    color: white;
+    width: 100%;
+    height: 60px;
+    border: 3px solid white;
+    border-radius: 10px;
+    display: grid;
+    place-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    text-align: center;
+    margin: 0.7rem auto
+}
+.primaryBar{
+  background: #00ff97 !important;
+}
+.secondaryBar{
+    border: 2px solid rgb(255, 123, 0);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+    border-bottom: none;
+}
