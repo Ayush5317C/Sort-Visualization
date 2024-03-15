@@ -8,7 +8,7 @@ const menuContainer = document.querySelector(".menuContainer");
 const menuIcon = document.querySelector(".menuIcon");
 const menuElements = document.querySelectorAll(".menuElement");
 const sortTitle = document.querySelector(".sortTitle");
-const timeDelay = 1;
+const timeDelay = 0.5;
 let prevSelectedMenu;
 let canPlay = true;
 let isSortChanged = false;
@@ -83,7 +83,7 @@ function generateBars(heights) {
     bar.style.left = `${i * 35}px`;
     barContainer.append(bar);
   }
-  bars = document.querySelectorAll(".bar");
+  bars = [...document.querySelectorAll(".bar")];
 }
 function play() {
   sortType[activeSort].sort();
@@ -91,29 +91,35 @@ function play() {
 async function selectionSort() {
   let n = heights.length;
   isSortChanged = false;
-//   O position ko element lai aru position ko element sange palai palo compare hanera sano huda swap hanne
-// O position ko element primary bar and baki ko secondary bar
-// swap handa
-// show ---> delay ---> O (primary) swap with secondary ---> delay ---> isSwapped = false feri agadi ko lai primary banaune
+  //search for the minimum value, at the end swap with current; then increase current and again find minimum and at the end swap with current
   for (let i = 0; i < n - 1; ++i) {
+    let minIndex = i;
     for (let j = i + 1; j < n; ++j) {
+      if (heights[j] < heights[minIndex]) {
+        bars[minIndex].classList.remove("minBar");
+        minIndex = j;
+        bars[minIndex].classList.add("minBar");
+      }
       //checking if user has changed the sorting techniques in the middle of sorting. if so, stopping sort
       if (isSortChanged) {
         isSortChanged = false;
+        removeActiveBarStyle();
         return;
       }
-      updateBars(i,j,false);
+      updateBars(i, j, false);
       await delay(timeDelay);
-      //sorting logic
-      if (heights[i] > heights[j]) {
-        swap(heights, i, j);
-        updateBars(i, j, true);
-        await delay(timeDelay);
-      }
     }
+    updateBars(i, minIndex, false);
+    await delay(timeDelay);
+    if (minIndex != i) {
+      swap(heights, i, minIndex);
+      updateBars(i, minIndex, true);
+      bars[i].classList.add("minBar");
+      bars[minIndex].classList.remove("minBar");
+      await delay(timeDelay);
+    }
+    bars[i].classList.remove("minBar");
   }
-  //removes the styling of two selected bars at last
-  removeActiveBarStyle();
 }
 async function bubbleSort() {
   let n = heights.length;
@@ -123,6 +129,7 @@ async function bubbleSort() {
       //checking if user has changed the sorting techniques in the middle of sorting. if so, stopping sort
       if (isSortChanged) {
         isSortChanged = false;
+        removeActiveBarStyle();
         return;
       }
       updateBarsForBubble(j, j + 1);
@@ -135,8 +142,6 @@ async function bubbleSort() {
       }
     }
   }
-  //removes the styling of two selected bars at last
-  removeActiveBarStyle();
 }
 async function insertionSort() {
   let n = heights.length;
@@ -146,9 +151,11 @@ async function insertionSort() {
       //checking if user has changed the sorting techniques in the middle of sorting. if so, stopping sort
       if (isSortChanged) {
         isSortChanged = false;
+        //removes the unwanted styling of bars
+        removeActiveBarStyle();
         return;
       }
-      updateBars(j, j-1, false);
+      updateBars(j, j - 1, false);
       await delay(timeDelay);
       //sorting logic
       if (heights[j - 1] < heights[j]) {
@@ -159,8 +166,6 @@ async function insertionSort() {
       await delay(timeDelay);
     }
   }
-  //removes the unwanted styling of bars
-  removeActiveBarStyle();
 }
 
 function swap(list, ind1, ind2) {
@@ -169,13 +174,19 @@ function swap(list, ind1, ind2) {
   list[ind2] = temp;
 }
 function updateBars(ind1, ind2, hasSwapped) {
+  if (hasSwapped) {
+    let t = ind1;
+    ind1 = ind2;
+    ind2 = t;
+  }
   bars.forEach((bar, i) => {
     bar.style.height = `${heights[i]}%`;
-    if (i == (!hasSwapped ? ind1 : ind2)) bar.classList.add("primaryBar");
-    else bar.classList.remove("primaryBar");
-
-    if (i == (!hasSwapped ? ind2 : ind1)) bar.classList.add("secondaryBar");
-    else bar.classList.remove("secondaryBar");
+    i == ind1
+      ? bar.classList.add("primaryBar")
+      : bar.classList.remove("primaryBar");
+    i == ind2
+      ? bar.classList.add("secondaryBar")
+      : bar.classList.remove("secondaryBar");
   });
 }
 function updateBarsForBubble(ind1, ind2) {
@@ -192,6 +203,7 @@ function removeActiveBarStyle() {
   for (const bar of bars) {
     bar.classList.remove("primaryBar");
     bar.classList.remove("secondaryBar");
+    bar.classList.remove("minBar");
   }
 }
 function delay(sec) {
