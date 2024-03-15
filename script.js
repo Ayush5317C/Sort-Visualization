@@ -8,7 +8,7 @@ const menuContainer = document.querySelector(".menuContainer");
 const menuIcon = document.querySelector(".menuIcon");
 const menuElements = document.querySelectorAll(".menuElement");
 const sortTitle = document.querySelector(".sortTitle");
-const timeDelay = 0.5;
+const timeDelay = 1;
 let prevSelectedMenu;
 let canPlay = true;
 let isSortChanged = false;
